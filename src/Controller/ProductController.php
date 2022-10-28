@@ -165,7 +165,9 @@ $session->remove('cartElements');
 // If any change above got trouble, we roll back (undo) all changes made above!
 $entityManager->getConnection()->rollBack();
 }
-return new Response("Check in DB to see if the checkout process is successful");
+return $this->renderForm('cart/review.html.twig', [
+    'cartElements' => $cartElements,
+]);
 } else
 return new Response("Nothing in cart to checkout!");
 }
