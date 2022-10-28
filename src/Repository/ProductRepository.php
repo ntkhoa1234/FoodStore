@@ -38,7 +38,38 @@ class ProductRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
+    public function findMore($minPrice, $maxPrice, $Cat,$word,$sortBy,$orderBy): Query
+    {
+        $entityManager = $this->getEntityManager();
+        $qb = $entityManager->createQueryBuilder();
+    $qb->select('p')
+    ->from('App:Product','p');
+    if(is_null($minPrice)|| empty($minPrice))  {
+        $minPrice=0;
+    }
+    if((is_null($orderBy)|| empty($orderBy))){
+        $qb->addOrderBy('p.Price', 'ASC'); 
+    }
+    if (($orderBy=='DESC')){
+        $qb->addOrderBy('p.Price', 'DESC'); 
+    }
+    if (($orderBy=='ASC')){
+        $qb->addOrderBy('p.Price', 'ASC'); 
+    }
+    $qb->where('p.Price>='.$minPrice);
+    if(!(is_null($maxPrice)|| empty($maxPrice)))  {
+        $qb->andWhere('p.Price<='.$maxPrice);
+    }
+    if(!(is_null($Cat)|| empty($Cat)))  {
+            $qb->andWhere('p.Category='.$Cat);
+    }
+    if(!(is_null($word)|| empty($word))){
+        $qb -> andWhere('p.Name like :word') ->setParameter('word','%'.$word.'%');
+    }
+    
+    
+    return $qb->getQuery();
+    }
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */

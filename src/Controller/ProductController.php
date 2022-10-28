@@ -18,10 +18,46 @@ class ProductController extends AbstractController
     /**
      * @Route("/list", name="app_product_index", methods={"GET"})
      */
-    public function index(ProductRepository $productRepository): Response
+    public function index(Request $request, ProductRepository $productRepository, CategoryRepository $categoryRepository, int $pageId = 1): Response
     {
+        //$this->denyAccessUnlessGranted('ROLE_CUSTOMER');
+        $minPrice = $request->query->get('minPrice');
+        $maxPrice = $request->query->get('maxPrice');
+        $Cat = $request->query->get('category');
+        $word = $request->query->get('name');
+        $orderby = $request->query->get('orderBy');
+        $sortBy = $request->query->get('sortBy');
+
+        
+        if(!(is_null($Cat)||empty($Cat))){
+            $selectedCat=$Cat;
+        }
+        else
+        $selectedCat='';
+
+
+        $tempQuery = $productRepository->findMore($minPrice, $maxPrice, $Cat,$word,$sortBy,$orderby);
+        $pageSize = 6;
+
+    // load doctrine Paginator
+        $paginator = new Paginator($tempQuery);
+
+    // you can get total items
+        $totalItems = count($paginator);
+
+    // get total pages
+        $numOfPages = ceil($totalItems / $pageSize);
+
+    // now get one page's items:
+        $tempQuery = $paginator
+        ->getQuery()
+        ->setFirstResult($pageSize * ($pageId - 1)) // set the offset
+        ->setMaxResults($pageSize); // set the limit
+
         return $this->render('product/index.html.twig', [
-            'products' => $productRepository->findAll(),
+            'products' =>  $tempQuery->getResult(),
+            'selectedCat' => $selectedCat,
+            'numOfPages' => $numOfPages
         ]);
     }
 
