@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
+use Symfony\Component\Validator\Constraints\File;
 class ProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -24,11 +24,11 @@ class ProductType extends AbstractType
 
                 // uses the User.username property as the visible option string
                 'choice_label' => 'Name'])
-                ->add('Image', FileType::class, [
-                'label' => 'Product Thumbnail',
+            ->add('Image', FileType::class, [
+                'label' => 'Please upload image',
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
-                // every time you edit the Product details
+                // // every time you edit the Product details
                 'required' => false
             ]
 )

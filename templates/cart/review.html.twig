@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Cart{% endblock %}
+{% block title %}Index{% endblock %}
 
 {% block body %}
     <h1>Index</h1>
@@ -14,15 +14,10 @@
         </thead>
         <tbody>
         {% for cartElement in cartElements %}
-            <tr>
-{#                <td>{{ cartElement.product }}</td>#}
-{#                <td>{{ cartElement.name }}</td>#}
-                <td>{{ cartElement.id}}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
+            
+              {{ cartElement.id }}
+             {# <td>{{ cartElement.name }}</td>
+                <td>{{ cartElement.quantity}}</td> #}
         {% endfor %}
         </tbody>
     </table>

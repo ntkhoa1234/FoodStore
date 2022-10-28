@@ -97,15 +97,19 @@ class ProductController extends AbstractController
          /**
  * @Route("/reviewCart", name="app_review_cart", methods={"GET"})
  */
-public function reviewCart(Request $request): Response
-{
+        public function reviewCart(Request $request): Response
+    {
     $session = $request->getSession();
+    
     if ($session->has('cartElements')) {
         $cartElements = $session->get('cartElements');
     } else
         $cartElements = [];
-    return $this->json($cartElements);
-}
+    //return $this->json($cartElements);
+           return $this->renderForm('cart/review.html.twig', [
+                 'cartElements' => $cartElements,
+         ]);
+    }
          /**
  * @Route("/checkoutCart", name="app_checkout_cart", methods={"GET"})
  */
@@ -175,9 +179,23 @@ return new Response("Nothing in cart to checkout!");
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $productImg = $form->get('Image')->getData();
+            if ($productImg) {
+                $originExt = pathinfo($productImg->getClientOriginalName(), PATHINFO_EXTENSION);
+                $newName = $product->getId() . '.' . $originExt;
+
+                try {
+                    $productImg->move(
+                        $this->getParameter('product_directory'),
+                        $newName
+                    );
+                } catch (FileException $e) {
+                }
+                $product->setImgUrl($newName);
+            }
+
             $productRepository->add($product, true);
 
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
@@ -186,15 +204,6 @@ return new Response("Nothing in cart to checkout!");
         return $this->renderForm('product/new.html.twig', [
             'product' => $product,
             'form' => $form,
-        ]);
-    }
-    /**
-     * @Route("/manage", name="app_product_manage", methods={"GET"})
-     */
-    public function manage(ProductRepository $productRepository): Response
-    {
-        return $this->render('product/manage.html.twig', [
-            'products' => $productRepository->findAll(),
         ]);
     }
     /**

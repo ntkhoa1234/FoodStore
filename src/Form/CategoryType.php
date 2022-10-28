@@ -14,13 +14,6 @@ class CategoryType extends AbstractType
         $builder
             ->add('Name')
             ->add('Description')
-            ->add('Category', 
-            EntityType::class, [
-                // looks for choices from this entity
-                'class' => Category::class,
-
-                // uses the User.username property as the visible option string
-                'choice_label' => 'Name'])
         ;
     }
 
