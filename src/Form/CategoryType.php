@@ -14,15 +14,7 @@ class CategoryType extends AbstractType
         $builder
             ->add('Name')
             ->add('Description')
-            ->add('Image', FileType::class, [
-                                'label' => 'Product Thumbnail',
-                                // unmapped means that this field is not associated to any entity property
-                                'mapped' => false,
-                                // every time you edit the Product details
-                                'required' => false
-                            ]
-                )
-                ->add('Category', 
+            ->add('Category', 
             EntityType::class, [
                 // looks for choices from this entity
                 'class' => Category::class,

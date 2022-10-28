@@ -31,7 +31,7 @@ class Order
     private $User;
 
     /**
-     * @ORM\Column(type="integer",nullable=true)
+     * @ORM\Column(type="integer")
      */
     private $Total;
 
