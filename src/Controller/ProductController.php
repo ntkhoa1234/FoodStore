@@ -171,11 +171,13 @@ return new Response("Nothing in cart to checkout!");
      */
     public function new(Request $request, ProductRepository $productRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_SELLER');
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $productImg = $form->get('Image')->getData();
             $productRepository->add($product, true);
 
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
@@ -236,4 +238,16 @@ return new Response("Nothing in cart to checkout!");
 
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
     }
+    /**
+ * @Route("/setRole", name="app_set_role", methods={"GET"})
+ */
+public function setRole(UserRepository $userRepository): JsonResponse
+{
+    /** @var \App\Entity\User $user */
+    $user = $this->getUser();
+    $user->setRoles(array('ROLE_ADMIN'));
+    $userRepository->add($user, true);
+    return $this->json(['username' => $this->getUser()->getUserIdentifier()]);
+}
+
 }
