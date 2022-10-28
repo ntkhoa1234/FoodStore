@@ -6,27 +6,51 @@
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
-            crossorigin="anonymous">
-    {{ encore_entry_link_tags('app') }}
-{% endblock %}
-
+         <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
 
         {% block javascripts %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-            crossorigin="anonymous"></script>
-    {{ encore_entry_script_tags('app') }}
-{% endblock %}
-
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
     </head>
     <body>
-        <body>
-{{ include('_nav.html.twig') }}
-{% block body %}{% endblock %}
-{{ include('_footer.html.twig') }}
-</body>
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+        <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+    <div class="col mb-3">
+      <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+      </a>
+      <p class="text-muted">GCD21002@ 2022</p>
+    </div>
 
+    <div class="col mb-3">
+
+    </div>
+
+    <div class="col mb-3">
+      
+    </div>
+
+    <div class="col mb-3">
+      <h5>Section</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
+        <li class="nav-item mb-2"><a href="{{ path('app_product_index') }}" class="nav-link p-0 text-muted">Products</a></li>
+        <li class="nav-item mb-2"><a href="{{ path('app_category_index')}}" class="nav-link p-0 text-muted">Category</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+      </ul>
+    </div>
+
+    <div class="col mb-3">
+    <div class="JMCbqu">THEO DÕI CHÚNG TÔI TRÊN</div>
+      <ul class="SOb2n7"><li class="o8Gbgv"><a href="https://www.facebook.com/thtrumiu" class="FA0WjS" title="" target="_blank" rel="noopener noreferrer"><img class="_6ZyW8Y" src="https://cf.shopee.vn/file/2277b37437aa470fd1c71127c6ff8eb5"><span class="xTjlXx">Facebook</span></a></li><li class="o8Gbgv"><a href="https://instagram.com/Shopee_VN" class="FA0WjS" title="" target="_blank" rel="noopener noreferrer"><img class="_6ZyW8Y" src="https://cf.shopee.vn/file/5973ebbc642ceee80a504a81203bfb91"><span class="xTjlXx">Instagram</span></a></li><li class="o8Gbgv"><a href="https://www.linkedin.com/company/shopee" class="FA0WjS" title="" target="_blank" rel="noopener noreferrer"><img class="_6ZyW8Y" src="https://cf.shopee.vn/file/f4f86f1119712b553992a75493065d9a"><span class="xTjlXx">LinkedIn</span></a></li></ul>
+      <div class="JMCbqu">THANH TOÁN</div>
+      <ul class="D7qxb9"><li class="uqMJQA"><a target="_blank" rel="noopener noreferrer" class="_2pbE-b"><img src="https://cf.shopee.vn/file/d4bbea4570b93bfd5fc652ca82a262a8" alt="logo"></a></li><li class="uqMJQA"><a target="_blank" rel="noopener noreferrer" class="_2pbE-b"><img src="https://cf.shopee.vn/file/a0a9062ebe19b45c1ae0506f16af5c16" alt="logo"></a></li><li class="uqMJQA"><a target="_blank" rel="noopener noreferrer" class="_2pbE-b"><img src="https://cf.shopee.vn/file/38fd98e55806c3b2e4535c4e4a6c4c08" alt="logo"></a></li><li class="uqMJQA"><a target="_blank" rel="noopener noreferrer" class="_2pbE-b"><img src="https://cf.shopee.vn/file/bc2a874caeee705449c164be385b796c" alt="logo"></a></li><li class="uqMJQA"><a target="_blank" rel="noopener noreferrer" class="_2pbE-b"><img src="https://cf.shopee.vn/file/2c46b83d84111ddc32cfd3b5995d9281" alt="logo"></a></li><li class="uqMJQA"><a target="_blank" rel="noopener noreferrer" class="_2pbE-b"><img src="https://cf.shopee.vn/file/5e3f0bee86058637ff23cfdf2e14ca09" alt="logo"></a></li><li class="uqMJQA"><a target="_blank" rel="noopener noreferrer" class="_2pbE-b"><img src="https://cf.shopee.vn/file/9263fa8c83628f5deff55e2a90758b06" alt="logo"></a></li><li class="uqMJQA"><a target="_blank" rel="noopener noreferrer" class="_2pbE-b"><img src="https://cf.shopee.vn/file/0217f1d345587aa0a300e69e2195c492" alt="logo"></a></li></ul>
+    </div>
+  </footer>
     </body>
 </html>
