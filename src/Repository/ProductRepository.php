@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
+
 
 /**
  * @extends ServiceEntityRepository<Product>
@@ -38,10 +40,20 @@ class ProductRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    public function findMore($minPrice, $maxPrice, $Cat,$word,$sortBy,$orderBy): Query
-    {
-        $entityManager = $this->getEntityManager();
-        $qb = $entityManager->createQueryBuilder();
+
+public function findMore($minPrice, $maxPrice, $Cat,$word,$sortBy,$orderBy): Query
+{
+$entityManager = $this->getEntityManager();
+
+
+          
+//'SELECT p from App\Entity\Product p
+//where p.Category=:Cat AND p.Price >= :minP AND p.Price <= :maxP
+//order by p.Price ASC')
+//->setParameter('minP', $minPrice)
+//->setParameter('maxP', $maxPrice)
+//->setParameter('Cat', $Cat);
+    $qb = $entityManager->createQueryBuilder();
     $qb->select('p')
     ->from('App:Product','p');
     if(is_null($minPrice)|| empty($minPrice))  {
@@ -70,6 +82,7 @@ class ProductRepository extends ServiceEntityRepository
     
     return $qb->getQuery();
     }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */
@@ -94,4 +107,6 @@ class ProductRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
 }
+
