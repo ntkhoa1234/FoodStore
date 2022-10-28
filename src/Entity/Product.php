@@ -25,7 +25,7 @@ class Product
     private $Category;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $Name;
 

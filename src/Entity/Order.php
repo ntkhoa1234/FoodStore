@@ -31,7 +31,7 @@ class Order
     private $User;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer",nullable=true)
      */
     private $Total;
 
@@ -89,27 +89,27 @@ class Order
     /**
      * @return Collection<int, OrderDetail>
      */
-    public function getProduct(): Collection
+    public function getOrderDetails(): Collection
     {
-        return $this->Product;
+        return $this->orderDetails;
     }
 
-    public function addProduct(OrderDetail $product): self
+    public function addOrderDetail(OrderDetail $orderDetail): self
     {
-        if (!$this->Product->contains($product)) {
-            $this->Product[] = $product;
-            $product->setOrd($this);
+        if (!$this->orderDetails->contains($orderDetail)) {
+            $this->orderDetails[] = $orderDetail;
+            $orderDetail->setOrd($this);
         }
 
         return $this;
     }
 
-    public function removeProduct(OrderDetail $product): self
+    public function removeOrderDetail(OrderDetail $orderDetail): self
     {
-        if ($this->Product->removeElement($product)) {
+        if ($this->orderDetails->removeElement($orderDetail)) {
             // set the owning side to null (unless already changed)
-            if ($product->getOrd() === $this) {
-                $product->setOrd(null);
+            if ($orderDetail->getOrd() === $this) {
+                $orderDetail->setOrd(null);
             }
         }
 

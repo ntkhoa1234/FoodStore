@@ -83,6 +83,26 @@ $entityManager = $this->getEntityManager();
     return $qb->getQuery();
     }
 
+
+    public function productjoincategory(string $price,string $category): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+      $price='%'. $price;
+      $price.='%';
+
+        $sql = '
+            SELECT * FROM  category
+            left join product on product.categoryname_id = category.id        
+     WHERE (product.name like :price ) and category.id like :category
+            ';
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery(['price' => $price,'category'=>$category]);
+
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */
