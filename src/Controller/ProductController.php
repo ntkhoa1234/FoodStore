@@ -27,11 +27,13 @@ use Doctrine\Common\Collections\Criteria;
 class ProductController extends AbstractController
 {
     /**
-     * @Route("/list", name="app_product_index", methods={"GET"})
+     * @Route("/list/{pageId}", name="app_product_index", methods={"GET"})
      */
-    public function index(Request $request, ProductRepository $productRepository, CategoryRepository $categoryRepository, int $pageId = 1): Response
+    public function index(Request $request, ProductRepository $productRepository,
+    CategoryRepository $categoryRepository,
+    int $pageId = 1): Response
     {
-        //$this->denyAccessUnlessGranted('ROLE_CUSTOMER');
+        //$this->denyAccessUnlessGranted('ROLE_USER');
         $minPrice = $request->query->get('minPrice');
         $maxPrice = $request->query->get('maxPrice');
         $Cat = $request->query->get('category');
@@ -48,7 +50,7 @@ class ProductController extends AbstractController
 
 
         $tempQuery = $productRepository->findMore($minPrice, $maxPrice, $Cat,$word,$sortBy,$orderby);
-        $pageSize = 6;
+        $pageSize = 4;
 
     // load doctrine Paginator
         $paginator = new Paginator($tempQuery);
@@ -65,12 +67,14 @@ class ProductController extends AbstractController
         ->setFirstResult($pageSize * ($pageId - 1)) // set the offset
         ->setMaxResults($pageSize); // set the limit
 
+
         return $this->render('product/index.html.twig', [
             'products' =>  $tempQuery->getResult(),
             'selectedCat' => $selectedCat,
             'numOfPages' => $numOfPages
         ]);
     }
+
         /**
  * @Route("/addCart/{id}", name="app_add_cart", methods={"GET"})
  */
@@ -105,10 +109,10 @@ class ProductController extends AbstractController
         $cartElements = $session->get('cartElements');
     } else
         $cartElements = [];
-    //return $this->json($cartElements);
-           return $this->renderForm('cart/review.html.twig', [
-                 'cartElements' => $cartElements,
-         ]);
+    return $this->json($cartElements);
+        //    return $this->renderForm('cart/review.html.twig', [
+        //          'cartElements' => $cartElements,
+        //  ]);
     }
          /**
  * @Route("/checkoutCart", name="app_checkout_cart", methods={"GET"})
@@ -165,9 +169,7 @@ $session->remove('cartElements');
 // If any change above got trouble, we roll back (undo) all changes made above!
 $entityManager->getConnection()->rollBack();
 }
-return $this->renderForm('cart/review.html.twig', [
-    'cartElements' => $cartElements,
-]);
+return new Response("Check in DB to see if the checkout process is successful");
 } else
 return new Response("Nothing in cart to checkout!");
 }
