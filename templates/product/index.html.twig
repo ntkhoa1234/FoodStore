@@ -15,7 +15,7 @@
                         <option value="1" {{ (selectedCat=="1") ? 'selected' }}> Food</option>
                         <option value="" {{ (selectedCat=="") ? 'selected' }} >All</option>
                         </select><br>
-                    Name: <input type="text" name="name"><br>
+                    Seach: <input type="text" name="name"><br>
                     Min Price: <input type="number" name="minPrice"><br>
                     Max Price: <input type="number" name="maxPrice"><br>
                     <input type="submit" value="Filter" class="btn btn-primary"> |
@@ -50,10 +50,10 @@
                                     <div class="card-footer">
                                         <a href="{{ path('app_product_show', {'id': product.id}) }}"
                                            class="btn btn-primary">Show</a>
-                                        <form action="{{ path('app_add_cart', {'id': product.id}) }}" method="GET">
-                                        <input type="number" id="quantity" name="quantity" value="1">
-                                        <button href="{{ path('app_add_cart', {'id': product.id}) }}"
-                                        class="btn btn-primary" type="submit">AddToCart</button>
+                                        <form action={{ path('app_add_cart',{ 'id': product.id }) }} method="get">
+                                        <input type="number" name="quantity" placeholder="Quantity"/>
+                                        <input type="submit" value="AddToCart" class="btn btn-success">
+            </form>
                                     </div>
                                    
                                 </div>

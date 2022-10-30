@@ -96,7 +96,7 @@ public function addCart(Product $product, Request $request)
         //Re-save cart Elements back to session again (after update/append new product to shopping cart)
         $session->set('cartElements', $cartElements);
     }
-    return new Response(); //means 200, successful
+    return $this->redirectToRoute('app_product_index', ['id'=> $product->getId()], Response::HTTP_SEE_OTHER); //means 200, successful
 }
 
          /**
@@ -124,7 +124,7 @@ OrderRepository       $orderRepository,
 ProductRepository     $productRepository,
 ManagerRegistry       $mr): Response
 {
-$this->denyAccessUnlessGranted('ROLE_USER');
+//$this->denyAccessUnlessGranted('ROLE_USER');
 $entityManager = $mr->getManager();
 $session = $request->getSession(); //get a session
 // check if session has elements in cart
@@ -181,25 +181,27 @@ return new Response("Nothing in cart to checkout!");
      */
     public function new(Request $request, ProductRepository $productRepository): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_SELLER');
+        $this->denyAccessUnlessGranted('ROLE_CUSTOMER');
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
             $productImg = $form->get('Image')->getData();
+            /** @var \App\Entity\User $user */
+            $user = $this->getUser();
             if ($productImg) {
                 $originExt = pathinfo($productImg->getClientOriginalName(), PATHINFO_EXTENSION);
-                $newName = $product->getId() . '.' . $originExt;
+                $newFileName = $product->getId() . '.' . $originExt;
 
                 try {
                     $productImg->move(
                         $this->getParameter('product_directory'),
-                        $newName
+                        $newFileName
                     );
                 } catch (FileException $e) {
                 }
-                $product->setImgUrl($newName);
+                $product->setImage($newFileName);
             }
 
             $productRepository->add($product, true);
@@ -229,7 +231,7 @@ return new Response("Nothing in cart to checkout!");
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
-
+        $this->denyAccessUnlessGranted('ROLE_CUSTOMER');
         if ($form->isSubmitted() && $form->isValid()) {
             $productRepository->add($product, true);
 
