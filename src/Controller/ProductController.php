@@ -78,26 +78,27 @@ class ProductController extends AbstractController
         /**
  * @Route("/addCart/{id}", name="app_add_cart", methods={"GET"})
  */
-     public function addCart(Product $product, Request $request)
-     {
-     $session = $request->getSession();
-     $quantity = (int)$request->query->get('quantity');
- 
-     //check if cart is empty
-     if (!$session->has('cartElements')) {
-         //if it is empty, create an array of pairs (prod Id & quantity) to store first cart element.
-         $cartElements = array($product->getId() => $quantity);
-         //save the array to the session for the first time.
-         $session->set('cartElements', $cartElements);
-     } else {
-         $cartElements = $session->get('cartElements');
-         //Add new product after the first time. (would UPDATE new quantity for added product)
-         $cartElements = array($product->getId() => $quantity) + $cartElements;
-         //Re-save cart Elements back to session again (after update/append new product to shopping cart)
-         $session->set('cartElements', $cartElements);
-     }
-     return new Response(); //means 200, successful
-     }
+public function addCart(Product $product, Request $request)
+{
+    $session = $request->getSession();
+    $quantity = (int)$request->query->get('quantity');
+
+    //check if cart is empty
+    if (!$session->has('cartElements')) {
+        //if it is empty, create an array of pairs (prod Id & quantity) to store first cart element.
+        $cartElements = array($product->getId() => $quantity);
+        //save the array to the session for the first time.
+        $session->set('cartElements', $cartElements);
+    } else {
+        $cartElements = $session->get('cartElements');
+        //Add new product after the first time. (would UPDATE new quantity for added product)
+        $cartElements = array($product->getId() => $quantity) + $cartElements;
+        //Re-save cart Elements back to session again (after update/append new product to shopping cart)
+        $session->set('cartElements', $cartElements);
+    }
+    return new Response(); //means 200, successful
+}
+
          /**
  * @Route("/reviewCart", name="app_review_cart", methods={"GET"})
  */
@@ -114,21 +115,21 @@ class ProductController extends AbstractController
         //          'cartElements' => $cartElements,
         //  ]);
     }
-         /**
+       /**
  * @Route("/checkoutCart", name="app_checkout_cart", methods={"GET"})
  */
-        public function checkoutCart(Request               $request,
-        OrderDetailRepository $orderDetailRepository,
-        OrderRepository       $orderRepository,
-        ProductRepository     $productRepository,
-        ManagerRegistry       $mr): Response
+public function checkoutCart(Request               $request,
+OrderDetailRepository $orderDetailRepository,
+OrderRepository       $orderRepository,
+ProductRepository     $productRepository,
+ManagerRegistry       $mr): Response
 {
 $this->denyAccessUnlessGranted('ROLE_USER');
 $entityManager = $mr->getManager();
 $session = $request->getSession(); //get a session
 // check if session has elements in cart
 if ($session->has('cartElements') && !empty($session->get('cartElements'))) {
-    try {
+try {
 // start transaction!
 $entityManager->getConnection()->beginTransaction();
 $cartElements = $session->get('cartElements');
@@ -173,6 +174,7 @@ return new Response("Check in DB to see if the checkout process is successful");
 } else
 return new Response("Nothing in cart to checkout!");
 }
+
 
     /**
      * @Route("/new", name="app_product_new", methods={"GET", "POST"})
